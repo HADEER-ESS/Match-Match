@@ -41,6 +41,12 @@
         {
           "photosPermission": "The app accesses your photos to make color analysis."
         }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+        }
       ]
     ],
     "experiments": {

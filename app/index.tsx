@@ -1,36 +1,39 @@
-import ImagePicker from "@/components/ImagePicker";
-import { StyleSheet, Text, View } from "react-native";
+import { useAudioPlayer } from 'expo-audio'
+import React from 'react'
+import { Button, StyleSheet, View } from 'react-native'
 
-export default function Index() {
-  return (
-    <View
-      style={styles.screenView}
-    >
-      <View style={styles.mainTitleContainer}>
-        <Text style={styles.mainTextStyle}>MATCHY ... MATCHY</Text>
-      </View>
-      <ImagePicker />
-    </View>
-  );
+const audioSource = require('../assets/images/intro.mp3')
+
+const OnBoarding = () => {
+    const player = useAudioPlayer(audioSource)
+
+    // useEffect(() => {
+    //     player.seekTo(5);
+    //     player.play()
+    // }, [])
+
+
+    return (
+        <View style={styles.mainScreen}>
+            <Button title="Play Sound" onPress={() => player.play()} />
+            <Button
+                title="Replay Sound"
+                onPress={() => {
+                    player.seekTo(0);
+                    player.play();
+                }}
+            />
+        </View>
+    )
 }
 
-const styles = StyleSheet.create({
-  screenView: {
-    flex: 1,
-    marginTop: 22,
-    backgroundColor: "#ffffff"
-  },
-  mainTitleContainer: {
-    backgroundColor: "#f010f1",
-    paddingVertical: 18,
-    alignItems: 'center',
-    margin: 20,
-    borderRadius: 10
-  },
-  mainTextStyle: {
-    fontSize: 18,
-    color: '#ffffff',
-    fontWeight: 'bold'
-  },
+export default OnBoarding
 
+const styles = StyleSheet.create({
+    mainScreen: {
+        flex: 1,
+        backgroundColor: '#ffffff'
+    },
+    midIconContainer: {},
+    mainImage: {}
 })
