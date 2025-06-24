@@ -1,11 +1,19 @@
-import { useAudioPlayer } from 'expo-audio'
+import { useRouter } from 'expo-router'
 import React from 'react'
 import { Button, StyleSheet, View } from 'react-native'
 
-const audioSource = require('../assets/images/intro.mp3')
+// const audioSource = require('../assets/images/intro.mp3')
 
 const OnBoarding = () => {
-    const player = useAudioPlayer(audioSource)
+    // const player = useAudioPlayer(audioSource)
+    const route = useRouter()
+
+    function pickImage() {
+        console.log("function called")
+        route.push("/mainHome")
+    }
+
+
 
     // useEffect(() => {
     //     player.seekTo(5);
@@ -15,14 +23,19 @@ const OnBoarding = () => {
 
     return (
         <View style={styles.mainScreen}>
-            <Button title="Play Sound" onPress={() => player.play()} />
+            <Button title="Play Sound" onPress={pickImage} />
             <Button
                 title="Replay Sound"
-                onPress={() => {
+                onPress={pickImage}
+            />
+            {
+                /*
+                () => {
                     player.seekTo(0);
                     player.play();
-                }}
-            />
+                }
+                */
+            }
         </View>
     )
 }

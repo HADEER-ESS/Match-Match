@@ -1,25 +1,38 @@
 import { getImageColorSimilarity } from '@/controller/colorComparesion'
 import ImageController from '@/controller/imageController'
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AnalysisView from './AnalysisView'
 import ImageView from './ImageView'
 
 
 const ImagePicker = () => {
-    const { getImage, images, getColorAnalysis } = ImageController()
-    const canCompare = images.length === 2 && images.every(img => img.color);
+    const { images, getImageInfo } = ImageController()
+    const [compare, setCompare] = useState<boolean>(false)
+    const [copData, setCompData] = useState<any>()
 
-    const comparison = canCompare
-        ? getImageColorSimilarity(images[0].color, images[1].color)
-        : null;
+    function compareSimilarityImage() {
+        setCompare(true)
+        let res = getImageColorSimilarity(
+            {
+                dominant: images[0]?.dominantColor,
+                average: images[0]?.vibrantColor
+            },
+            {
+                dominant: images[1]?.dominantColor,
+                average: images[1]?.vibrantColor
+            }
+        )
+
+        setCompData(res)
+    }
 
     return (
         <View style={styles.ImageAnalysisContainer}>
             <View style={styles.pickerContainer}>
                 {[0, 1].map(i => (
                     <View key={i}>
-                        <TouchableOpacity onPress={getImage}>
+                        <TouchableOpacity onPress={getImageInfo}>
                             {images[i]?.uri ? (
                                 <ImageView source={images[i].uri} />
                             ) : (
@@ -29,26 +42,28 @@ const ImagePicker = () => {
                             )}
                         </TouchableOpacity>
 
-                        {images[i] && !images[i].color && (
-                            <TouchableOpacity style={styles.btnStyle} onPress={() => getColorAnalysis(i)}>
-                                <Text style={[styles.btnText, { color: "#ffffff" }]}>Analyze</Text>
-                            </TouchableOpacity>
-                        )}
-
-                        {images[i]?.color && <AnalysisView color={images[i].color} />}
+                        <AnalysisView
+                            dominant={images[i]?.dominantColor}
+                            vibrant={images[i]?.vibrantColor}
+                            average={images[i]?.averageColor}
+                        />
                     </View>
                 ))}
             </View>
-            {comparison && (
+            {images.length === 2 &&
+                <TouchableOpacity style={styles.btnStyle} onPress={compareSimilarityImage}>
+                    <Text style={styles.btnText}>Analyis</Text>
+                </TouchableOpacity>}
+            {compare && (
                 <View style={{ marginTop: 16 }}>
                     <Text style={{ textAlign: 'center' }}>Dominant Similarity:
-                        <Text style={{ color: comparison.dominantSimilarity > 80 ? "green" : "pink", marginHorizontal: 6 }}>
-                            {comparison.dominantSimilarity}%
+                        <Text style={{ color: copData.dominantSimilarity > 80 ? "green" : "pink", marginHorizontal: 6 }}>
+                            {copData.dominantSimilarity}%
                         </Text>
                     </Text>
                     <Text style={{ textAlign: 'center' }}>Average Similarity:
-                        <Text style={{ color: comparison.vibrantSimilarity > 80 ? "green" : "pink", marginHorizontal: 6 }}>
-                            {comparison.vibrantSimilarity}%
+                        <Text style={{ color: copData.vibrantSimilarity > 80 ? "green" : "pink", marginHorizontal: 6 }}>
+                            {copData.vibrantSimilarity}%
                         </Text>
                     </Text>
                 </View>
