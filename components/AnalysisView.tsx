@@ -1,18 +1,22 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
+type ImageColor = {
+    dominant: string,
+    vibrant: string,
+    average: string
+}
 
-
-const AnalysisView = ({ color }: Record<string, string>) => {
+const AnalysisView = ({ dominant, vibrant, average }: ImageColor) => {
     return (
         <View style={{ marginVertical: 18 }}>
             <View style={styles.infoContainer}>
-                <View style={[styles.colorBox, { backgroundColor: color?.dominant }]}></View>
+                <View style={[styles.colorBox, { backgroundColor: dominant }]}></View>
                 <Text>Dominant</Text>
             </View>
             <View style={styles.infoContainer}>
-                <View style={[styles.colorBox, { backgroundColor: color?.average }]}></View>
-                <Text>Average</Text>
+                <View style={[styles.colorBox, { backgroundColor: vibrant }]}></View>
+                <Text>Vibrant</Text>
             </View>
         </View>
     )
