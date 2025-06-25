@@ -43,8 +43,6 @@ const ImageController = () => {
         const updatedImages = [...images];
         updatedImages[idx] = { ...targetImage, color };
         setImages(updatedImages);
-        console.log("res ", color)
-        // setColor(res)
     }
 
     return {
