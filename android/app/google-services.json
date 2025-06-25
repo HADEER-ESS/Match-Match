@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "955371864573",
+    "project_id": "matchy-matchy-f0cd6",
+    "storage_bucket": "matchy-matchy-f0cd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955371864573:android:0718e6c62c2958f0d2d994",
+        "android_client_info": {
+          "package_name": "com.hadeer.Matchy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJlyr_0NqIph5NuTvnz19HVCd6_nzZ3NY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
