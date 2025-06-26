@@ -8,12 +8,13 @@ import com.facebook.react.module.model.ReactModuleInfoProvider
 
 class NativeMediaPickerPackage : BaseReactPackage(){
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
-        if(name == NativeMediaPickerModule.NAME){
-            return NativeMediaPickerModule(reactContext)
-        }
-        else{
-            return null
-        }
+         if(name == NativeMediaPickerModule.NAME){
+             return NativeMediaPickerModule(reactContext)
+         }
+//         else if(name == Na)
+         else{
+             return null
+         }
     }
 
     override fun getReactModuleInfoProvider()= ReactModuleInfoProvider {
