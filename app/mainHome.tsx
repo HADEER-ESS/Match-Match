@@ -1,5 +1,6 @@
 import ImagePicker from "@/components/ImagePicker";
 import { StyleSheet, Text, View } from "react-native";
+import COLORS from "../constant/Color.js";
 
 export default function MainHome() {
   return (
@@ -7,6 +8,7 @@ export default function MainHome() {
       style={styles.screenView}
     >
       <View style={styles.mainTitleContainer}>
+        <Text style={styles.welcomingText}>Welcome to Matchy Matchy</Text>
         <Text style={styles.mainTextStyle}>MATCHY ... MATCHY</Text>
       </View>
       <ImagePicker />
@@ -18,7 +20,11 @@ const styles = StyleSheet.create({
   screenView: {
     flex: 1,
     marginTop: 22,
-    backgroundColor: "#ffffff"
+    backgroundColor: COLORS.white
+  },
+  welcomingText: {
+    fontFamily: 'regular',
+    color: COLORS.gray
   },
   mainTitleContainer: {
     backgroundColor: "#f010f1",

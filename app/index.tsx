@@ -1,41 +1,27 @@
+import COLORS from '@/constant/Color'
 import { useRouter } from 'expo-router'
 import React from 'react'
-import { Button, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 
-// const audioSource = require('../assets/images/intro.mp3')
 
 const OnBoarding = () => {
-    // const player = useAudioPlayer(audioSource)
     const route = useRouter()
-
-    function pickImage() {
-        console.log("function called")
-        route.push("/mainHome")
-    }
-
 
 
     // useEffect(() => {
-    //     player.seekTo(5);
-    //     player.play()
-    // }, [])
-
+    //     setTimeout(() => {
+    //         route.push("/mainHome")
+    //     }, 5000)
+    // })
 
     return (
         <View style={styles.mainScreen}>
-            <Button title="Play Sound" onPress={pickImage} />
-            <Button
-                title="Replay Sound"
-                onPress={pickImage}
+            <Image
+                source={require("../assets/images/splash_image.png")}
+                style={styles.mainImage}
+                width={225}
+                height={225}
             />
-            {
-                /*
-                () => {
-                    player.seekTo(0);
-                    player.play();
-                }
-                */
-            }
         </View>
     )
 }
@@ -45,8 +31,12 @@ export default OnBoarding
 const styles = StyleSheet.create({
     mainScreen: {
         flex: 1,
-        backgroundColor: '#ffffff'
+        backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     midIconContainer: {},
-    mainImage: {}
+    mainImage: {
+        resizeMode: 'contain'
+    }
 })
