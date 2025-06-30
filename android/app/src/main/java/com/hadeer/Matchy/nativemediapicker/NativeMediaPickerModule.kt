@@ -1,4 +1,4 @@
-package com.nativemediapicker
+package com.nativemodules
 
 import android.app.Activity
 import android.content.Intent
@@ -13,7 +13,8 @@ import com.facebook.react.bridge.ReactApplicationContext
 
 
 class NativeMediaPickerModule(reactContext : ReactApplicationContext)
-    : NativeMediaPickerSpec(reactContext), ActivityEventListener{
+    : NativeMediaPickerSpec(reactContext), ActivityEventListener
+{
     override fun getName() = NAME
 
     private var mediaPickerPromise : Promise? = null

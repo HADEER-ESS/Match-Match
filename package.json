@@ -11,11 +11,11 @@
     "lint": "expo lint"
   },
   "codegenConfig": {
-    "name": "NativeMediaPicker",
-    "type": "module",
+    "name": "MyNativeModules",
+    "type": "modules",
     "jsSrcsDir": "specs",
     "android": {
-      "javaPackageName": "com.nativemediapicker"
+      "javaPackageName": "com.nativemodules"
     }
   },
   "dependencies": {
