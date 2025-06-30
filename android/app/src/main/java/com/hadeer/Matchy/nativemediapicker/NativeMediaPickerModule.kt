@@ -1,13 +1,11 @@
-package com.nativemediapicker
+package com.nativemodules
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.palette.graphics.Palette
-import com.facebook.fbreact.specs.NativeMediaPickerSpec
 import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
@@ -18,9 +16,6 @@ class NativeMediaPickerModule(reactContext : ReactApplicationContext)
     : NativeMediaPickerSpec(reactContext), ActivityEventListener
 {
     override fun getName() = NAME
-    private var tts :TextToSpeech? = null
-    private val text : String = "Matchy Matchy"
-    private val  spead : Float = 1.0f
 
     private var mediaPickerPromise : Promise? = null
 

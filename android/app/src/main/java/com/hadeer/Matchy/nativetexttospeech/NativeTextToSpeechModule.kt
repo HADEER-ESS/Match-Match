@@ -1,7 +1,6 @@
-package com.nativetexttospeech
+package com.nativemodules
 
 import android.speech.tts.TextToSpeech
-import com.facebook.fbreact.specs.NativeTextToSpeechSpec
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 
@@ -15,7 +14,7 @@ class NativeTextToSpeechModule(reactContext : ReactApplicationContext):
     private var tts : TextToSpeech? = null
     override fun speak(promise: Promise?) {
         if(tts == null){
-            tts = TextToSpeech(reactApplicationContext, this)
+            tts = TextToSpeech(reactApplicationContext ,this)
             promise?.resolve("Initialize")
         }else{
             tts?.setPitch(1.0f)
