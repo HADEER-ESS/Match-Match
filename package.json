@@ -15,10 +15,7 @@
     "type": "modules",
     "jsSrcsDir": "specs",
     "android": {
-      "javaPackageName": [
-        "com.nativemediapicker",
-        "com.nativetexttospeech"
-      ]
+      "javaPackageName": "com.nativemodules"
     }
   },
   "dependencies": {
