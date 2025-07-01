@@ -11,7 +11,7 @@ export function FontLoader({ children }: props) {
     const [fontsLoaded] = useFonts({
         'odd': require("../assets/fonts/Frijole-Regular.ttf"),
         'regular': require("../assets/fonts/Poppins-Regular.ttf"),
-        'semi-bold': require("../assets/fonts/Poppins-SemiBold.ttf"),
+        'semi_bold': require("../assets/fonts/Poppins-SemiBold.ttf"),
         'bold': require("../assets/fonts/Poppins-Bold.ttf"),
         'medium': require("../assets/fonts/Poppins-Medium.ttf")
     })
