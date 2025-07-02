@@ -1,6 +1,7 @@
 import COLORS from '@/constant/Color'
 import { getImageColorSimilarity } from '@/controller/colorComparesion'
 import ImageController from '@/controller/imageController'
+import SuggestionController from '@/controller/suggestionController'
 import React, { useState } from 'react'
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AnalysisView from './AnalysisView'
@@ -8,13 +9,22 @@ import DonutChart from './DonutChart'
 import HorizontalLine from './HorizontalLine'
 import ImageView from './ImageView'
 import SimilarityText from './SimilarityText'
+import SuggestionSectionView from './SuggestionSectionView'
+import TryAgainBtn from './TryAgainBtn'
 
 
 const ImagePicker = () => {
-    const { images, getImageInfo } = ImageController()
+    const { images, getImageInfo, clearData } = ImageController()
+    const { convertHexToRgp, suggests } = SuggestionController()
     const [compare, setCompare] = useState<boolean>(false)
     const [copData, setCompData] = useState<any>()
     const [type, setType] = useState<number>(1)  // 1=> for Numbers | 2=> for Chart
+
+    function handleTryAgainBtn() {
+        clearData()
+        setCompare(false)
+        setCompData([])
+    }
 
     function handlePickNewImage() {
         setCompare(false)
@@ -34,15 +44,14 @@ const ImagePicker = () => {
                     average: images[1]?.vibrantColor
                 }
             )
+            convertHexToRgp([images[0]?.dominantColor, images[1]?.dominantColor, images[0]?.vibrantColor, images[1]?.vibrantColor])
             setCompData(res)
-            console.log("updated data ", images, "\nres ", res)
         }
         else {
             setCompare(false)
             Alert.alert("Hi!", "You have to pick image first")
             return null
         }
-
     }
 
     return (
@@ -75,7 +84,7 @@ const ImagePicker = () => {
                 ))}
             </View>
             <HorizontalLine />
-            <Text onPress={compareSimilarityImage} style={[styles.btnText, { color: compare ? COLORS.black : COLORS.pink }]}>Show Analysis</Text>
+            <Text disabled={compare} onPress={compareSimilarityImage} style={[styles.btnText, { color: compare ? COLORS.black : COLORS.pink }]}>Show Analysis</Text>
 
             {compare && (
                 <View style={styles.analysisContainer}>
@@ -104,12 +113,15 @@ const ImagePicker = () => {
                                 <DonutChart progress={copData.vibrantSimilarity} text={'Vibrant'} />
                             </View>
                     }
-
+                    <SuggestionSectionView colors={suggests} />
+                    <TryAgainBtn fun={handleTryAgainBtn} />
 
                 </View>
 
 
             )}
+
+
         </View>
     );
 }
