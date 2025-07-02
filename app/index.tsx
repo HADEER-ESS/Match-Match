@@ -22,7 +22,7 @@ const OnBoarding = () => {
         welcomingText()
         setTimeout(() => {
             route.push("/mainHome")
-        }, 5000)
+        }, 2000)
     })
 
     return (
