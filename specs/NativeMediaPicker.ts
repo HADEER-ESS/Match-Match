@@ -18,6 +18,5 @@ export default TurboModuleRegistry.getEnforcing<Spec>(
 /**
  * this name must be the same in
  * 1- here
- * 2- codegenConfig
- * 3- NAME in Native Module
+ * 2- NAME in Native Module
  */
