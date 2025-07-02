@@ -13,9 +13,14 @@ const ImageController = () => {
         }
     }
 
+    const clearData = () => {
+        setImages([])
+    }
+
     return {
         images,
-        getImageInfo
+        getImageInfo,
+        clearData
     }
 }
 
