@@ -9,6 +9,7 @@ export type ImageReturnData = {
 
 export interface Spec extends TurboModule {
     getMedia(): Promise<ImageReturnData>
+    takePhoto(): Promise<ImageReturnData>
 }
 
 

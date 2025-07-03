@@ -14,8 +14,8 @@ import TryAgainBtn from './TryAgainBtn'
 
 
 const ImagePicker = () => {
-    const { images, getImageInfo, clearData } = ImageController()
-    const { convertHexToRgp, suggests } = SuggestionController()
+    const { images, getImageInfo, clearData, getCameraImageInfo } = ImageController()
+    const { convertHexToRgp, suggests, cleanup } = SuggestionController()
     const [compare, setCompare] = useState<boolean>(false)
     const [copData, setCompData] = useState<any>()
     const [type, setType] = useState<number>(1)  // 1=> for Numbers | 2=> for Chart
@@ -24,11 +24,16 @@ const ImagePicker = () => {
         clearData()
         setCompare(false)
         setCompData([])
+        cleanup()
     }
 
     function handlePickNewImage() {
         setCompare(false)
         getImageInfo()
+    }
+    function handleCameraImage() {
+        setCompare(false)
+        getCameraImageInfo()
     }
 
     function compareSimilarityImage() {
@@ -59,22 +64,34 @@ const ImagePicker = () => {
             <View style={styles.pickerContainer}>
                 {[0, 1].map(i => (
                     <View key={i}>
-                        <TouchableOpacity onPress={handlePickNewImage}>
-                            {images[i]?.uri ? (
-                                <ImageView source={images[i].uri} />
-                            ) : (
-                                <View style={styles.pickImageContainerBnt}>
-                                    <Image
-                                        source={require('../assets/images/img_pick.png')}
-                                        width={25}
-                                        height={25}
-                                        resizeMode='cover'
-                                    />
-                                    <Text style={styles.imgTextStyle}>import image</Text>
-                                </View>
-                            )}
-                        </TouchableOpacity>
+                        {images[i]?.uri ? (
+                            <ImageView source={images[i].uri} />
+                        ) : (
+                            <View style={styles.pickImageContainerBnt}>
+                                <View style={styles.imagePickerOptionsContainer}>
+                                    <TouchableOpacity onPress={handlePickNewImage}>
+                                        <Image
+                                            source={require('../assets/images/img_pick.webp')}
+                                            width={45}
+                                            height={45}
+                                            resizeMode='contain'
+                                            style={{ marginHorizontal: 6 }}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={handleCameraImage}>
+                                        <Image
+                                            source={require('../assets/images/camera_icv.webp')}
+                                            width={45}
+                                            height={45}
+                                            resizeMode='contain'
+                                            style={{ marginHorizontal: 6 }}
+                                        />
+                                    </TouchableOpacity>
 
+                                </View>
+
+                            </View>
+                        )}
                         <AnalysisView
                             dominant={images[i]?.dominantColor}
                             vibrant={images[i]?.vibrantColor}
@@ -113,7 +130,12 @@ const ImagePicker = () => {
                                 <DonutChart progress={copData.vibrantSimilarity} text={'Vibrant'} />
                             </View>
                     }
-                    <SuggestionSectionView colors={suggests} />
+                    {
+                        suggests.length ?
+                            <SuggestionSectionView colors={suggests} /> :
+                            <View style={{ borderRadius: 8, backgroundColor: COLORS.baby_blue, width: 'auto', height: 21 }} />
+                    }
+
                     <TryAgainBtn fun={handleTryAgainBtn} />
 
                 </View>
@@ -140,6 +162,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 16
+    },
+    imagePickerOptionsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     pickerContainer: {
         flexDirection: 'row',

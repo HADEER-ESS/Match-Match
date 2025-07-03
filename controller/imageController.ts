@@ -13,12 +13,22 @@ const ImageController = () => {
         }
     }
 
+    const getCameraImageInfo = async () => {
+        try {
+            let result = await NativeMediaPicker.takePhoto()
+            setImages(prev => [...prev, result].slice(-2));
+        } catch (error) {
+            console.error("error in taking image color info.. ", error)
+        }
+    }
+
     const clearData = () => {
         setImages([])
     }
 
     return {
         images,
+        getCameraImageInfo,
         getImageInfo,
         clearData
     }
