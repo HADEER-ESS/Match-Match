@@ -4,66 +4,126 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.palette.graphics.Palette
 import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import java.io.File
+import java.io.IOException
 
 
-class NativeMediaPickerModule(reactContext : ReactApplicationContext)
+class NativeMediaPickerModule(private val reactContext : ReactApplicationContext)
     : NativeMediaPickerSpec(reactContext), ActivityEventListener
 {
     override fun getName() = NAME
 
     private var mediaPickerPromise : Promise? = null
+    private var photoUri: Uri? = null
 
     init {
         reactContext.addActivityEventListener(this)
     }
 
     override fun getMedia(promise: Promise) {
-        val currentActivity = currentActivity
+        val currentActivity = reactContext.currentActivity
 
-        if(currentActivity == null){
-            promise.reject("ACTIVITY_NOT_FOUND", "Activity doesn't exist")
+        if(currentActivity == null || currentActivity.isFinishing){
+            promise.reject("ACTIVITY_NOT_FOUND", "Current Activity: ${reactContext.currentActivity}")
             return
         }
         mediaPickerPromise = promise
-//        val nintent = Intent(MediaStore.ACTION_PICK_IMAGES)
+
         val intent = Intent(Intent.ACTION_PICK).apply {
             type = "image/"
         }
         currentActivity.startActivityForResult(intent, IMAGE_PICKER_REQUEST)
 
     }
+
+    override fun takePhoto(promise: Promise?) {
+        val currentActivity = reactContext.currentActivity
+        if(currentActivity == null || currentActivity.isFinishing){
+            promise?.reject("ACTIVITY_NOT_FOUND", "Current Activity: ${reactContext.currentActivity}")
+            return
+        }
+        mediaPickerPromise = promise
+        val photoFile: File? = createImageFile()
+        if(photoFile == null){
+            promise?.reject("FILE_CREATION_FAILED" , "Failed to create image file")
+            return
+        }
+
+        photoUri = FileProvider.getUriForFile(
+            reactContext,
+            reactContext.packageName + ".provider",
+            photoFile
+        )
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        }
+
+        currentActivity.startActivityForResult(intent, IMAGE_CAPTURE_REQUEST)
+    }
+
+    private fun createImageFile(): File? {
+        return try {
+            val storageDir = reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            File.createTempFile("IMG_" , ".png", storageDir)
+        }
+        catch (e : IOException){
+            e.printStackTrace()
+            null
+        }
+    }
+
     companion object {
         const val NAME = "NativeMediaPicker"
-        private const val IMAGE_PICKER_REQUEST = 12345
+        private const val IMAGE_PICKER_REQUEST = 1002
+        private const val IMAGE_CAPTURE_REQUEST = 1001
     }
 
     override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d("NativeMediaPicker", "onActivityResult triggered: $requestCode")
-        if(requestCode == IMAGE_PICKER_REQUEST && resultCode == Activity.RESULT_OK){
-            val uri: Uri? = data?.data
-            if(uri != null) {
-                val dominantHex = getDominantColor(uri)
-                val vibrantHex = getVibrantColor(uri)
-                val averageHex = getAverageColor(uri)
+        if(resultCode != Activity.RESULT_OK){
+            mediaPickerPromise?.reject("No_IMAGE" , "No image selected")
+            mediaPickerPromise = null
+            return
+        }
+        when(requestCode){
+            IMAGE_PICKER_REQUEST -> {
+                val uri : Uri? = data?.data
+                if(uri != null) {
+                    val dominantHex = getDominantColor(uri)
+                    val vibrantHex = getVibrantColor(uri)
+                    val averageHex = getAverageColor(uri)
+                    val result = Arguments.createMap().apply {
+                        putString("uri", uri.toString())
+                        putString("dominantColor", dominantHex)
+                        putString("vibrantColor", vibrantHex)
+                        putString("averageColor", averageHex)
+                    }
+                    mediaPickerPromise?.resolve(result)
+                }
+            }
+            IMAGE_CAPTURE_REQUEST -> {
+                val dominantHex = getDominantColor(photoUri!!)
+                val vibrantHex = getVibrantColor(photoUri!!)
+                val averageHex = getAverageColor(photoUri!!)
                 val result = Arguments.createMap().apply {
-                    putString("uri", uri.toString())
+                    putString("uri", photoUri!!.toString())
                     putString("dominantColor", dominantHex)
                     putString("vibrantColor", vibrantHex)
                     putString("averageColor", averageHex)
                 }
                 mediaPickerPromise?.resolve(result)
             }
-            else{
-                mediaPickerPromise?.reject("No_IMAGE" , "No image selected")
-            }
         }
-        mediaPickerPromise = null
     }
 
     private fun getDominantColor(uri: Uri) : String{

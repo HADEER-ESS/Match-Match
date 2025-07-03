@@ -66,9 +66,15 @@ export default function SuggestionController() {
         return data;
     }
 
+    function cleanup() {
+        setConverters([])
+        setSuggests([])
+    }
+
 
     return {
         convertHexToRgp,
+        cleanup,
         suggests
     }
 
