@@ -18,7 +18,7 @@ export default function MainHome() {
           </Text>
 
           <Image
-            source={require("../assets/images/header_start.png")}
+            source={require("../assets/images/header_start.webp")}
             style={{ width: 50, height: 50 }}
             resizeMode="contain"
           />

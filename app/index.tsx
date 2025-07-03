@@ -2,7 +2,7 @@ import COLORS from '@/constant/Color'
 import NativeTextToSpeech from '@/specs/NativeTextToSpeech'
 import { useRouter } from 'expo-router'
 import React, { useEffect } from 'react'
-import { Image, StatusBar, StyleSheet, View } from 'react-native'
+import { Image, ImageBackground, StatusBar, StyleSheet } from 'react-native'
 
 
 const OnBoarding = () => {
@@ -26,15 +26,15 @@ const OnBoarding = () => {
     })
 
     return (
-        <View style={styles.mainScreen}>
+        <ImageBackground source={require("../assets/images/splash_background.webp")} style={styles.mainScreen}>
             <StatusBar barStyle={'light-content'} />
             <Image
-                source={require("../assets/images/splash_image.png")}
+                source={require("../assets/images/splash_image.webp")}
                 style={styles.mainImage}
                 width={225}
                 height={225}
             />
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -43,6 +43,8 @@ export default OnBoarding
 const styles = StyleSheet.create({
     mainScreen: {
         flex: 1,
+        width: '100%',
+        height: '100%',
         backgroundColor: COLORS.white,
         justifyContent: 'center',
         alignItems: 'center',
