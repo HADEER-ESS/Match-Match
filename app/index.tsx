@@ -1,12 +1,17 @@
 import COLORS from '@/constant/Color'
 import NativeTextToSpeech from '@/specs/NativeTextToSpeech'
-import { useRouter } from 'expo-router'
-import React, { useEffect } from 'react'
+import { useRootNavigationState, useRouter } from 'expo-router'
+import React, { useEffect, useRef } from 'react'
 import { Image, ImageBackground, StatusBar, StyleSheet } from 'react-native'
 
 
 const OnBoarding = () => {
     const route = useRouter()
+    let navState = useRootNavigationState()
+    const hasNavigated = useRef(false)
+    console.log("Navigation State: ", navState)
+
+
 
     function welcomingText() {
         NativeTextToSpeech.speak()
@@ -19,11 +24,17 @@ const OnBoarding = () => {
     }
 
     useEffect(() => {
+        if (!navState.key || hasNavigated.current) return
+
+        hasNavigated.current = true
+
         welcomingText()
-        setTimeout(() => {
-            route.push("/mainHome")
+        const timer = setTimeout(() => {
+            route.navigate("/mainHome")
         }, 2000)
-    })
+
+        return () => clearTimeout(timer)
+    }, [navState.key, route])
 
     return (
         <ImageBackground resizeMode='contain' source={require("../assets/images/splash_background.webp")} style={styles.mainScreen}>

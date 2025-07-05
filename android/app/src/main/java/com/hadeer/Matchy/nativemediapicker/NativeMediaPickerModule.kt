@@ -179,8 +179,8 @@ class NativeMediaPickerModule(private val reactContext : ReactApplicationContext
         return  String.format("#%06X" , 0xFFFFFF and color!!)
     }
 
-    override fun onNewIntent(p0: Intent?) {
-        TODO("Not yet implemented")
+    override fun onNewIntent(intent: Intent?) {
+        // No action needed for now, but must be implemented
     }
 }
 
