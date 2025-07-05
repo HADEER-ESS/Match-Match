@@ -20,9 +20,9 @@ const OnBoarding = () => {
 
     useEffect(() => {
         welcomingText()
-        // setTimeout(() => {
-        //     route.push("/mainHome")
-        // }, 2000)
+        setTimeout(() => {
+            route.push("/mainHome")
+        }, 2000)
     })
 
     return (
