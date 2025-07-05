@@ -49,7 +49,12 @@ const ImagePicker = () => {
                     average: images[1]?.vibrantColor
                 }
             )
-            convertHexToRgp([images[0]?.dominantColor, images[1]?.dominantColor, images[0]?.vibrantColor, images[1]?.vibrantColor])
+            let set: Set<string> = new Set()
+            set.add(images[0]?.dominantColor)
+            set.add(images[1]?.dominantColor)
+            set.add(images[0]?.vibrantColor)
+            set.add(images[1]?.vibrantColor)
+            convertHexToRgp(Array.from(set))
             setCompData(res)
         }
         else {
