@@ -20,19 +20,19 @@ const OnBoarding = () => {
 
     useEffect(() => {
         welcomingText()
-        setTimeout(() => {
-            route.push("/mainHome")
-        }, 2000)
+        // setTimeout(() => {
+        //     route.push("/mainHome")
+        // }, 2000)
     })
 
     return (
-        <ImageBackground source={require("../assets/images/splash_background.webp")} style={styles.mainScreen}>
+        <ImageBackground resizeMode='contain' source={require("../assets/images/splash_background.webp")} style={styles.mainScreen}>
             <StatusBar barStyle={'light-content'} />
             <Image
                 source={require("../assets/images/splash_image.webp")}
                 style={styles.mainImage}
-                width={225}
-                height={225}
+                width={200}
+                height={200}
             />
         </ImageBackground>
     )
@@ -43,8 +43,6 @@ export default OnBoarding
 const styles = StyleSheet.create({
     mainScreen: {
         flex: 1,
-        width: '100%',
-        height: '100%',
         backgroundColor: COLORS.white,
         justifyContent: 'center',
         alignItems: 'center',

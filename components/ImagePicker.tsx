@@ -3,7 +3,7 @@ import { getImageColorSimilarity } from '@/controller/colorComparesion'
 import ImageController from '@/controller/imageController'
 import SuggestionController from '@/controller/suggestionController'
 import React, { useState } from 'react'
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AnalysisView from './AnalysisView'
 import DonutChart from './DonutChart'
 import HorizontalLine from './HorizontalLine'
@@ -138,7 +138,7 @@ const ImagePicker = () => {
                     {
                         suggests.length ?
                             <SuggestionSectionView colors={suggests} /> :
-                            <View style={{ borderRadius: 8, backgroundColor: COLORS.baby_blue, width: 'auto', height: 21 }} />
+                            <ActivityIndicator style={{ marginTop: 24 }} color={COLORS.pink} size={'large'} />
                     }
 
                     <TryAgainBtn fun={handleTryAgainBtn} />
