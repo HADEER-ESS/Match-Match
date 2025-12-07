@@ -1,5 +1,7 @@
 # Welcome to your Expo app 👋
-## Match-Match
+## Match-Match 
+<img width="400" height="400" alt="matchy-matchy-removebg-preview" src="https://github.com/user-attachments/assets/adacd638-6e71-4dd6-86eb-30639fff06ed" />
+
 ### A React Native (Expo) color-analysis application with a custom Turbo Module
 
 - Match-Match is a lightweight mobile application built with React Native & Expo for analyzing and detecting colors.
